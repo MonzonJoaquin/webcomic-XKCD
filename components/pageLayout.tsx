@@ -17,7 +17,6 @@ function PageLayout({ children, title='WebComic XKCD'}: Props) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <NavBar/>
-      <header>{title}</header>
       <main>{children}</main>
       <footer>Footer</footer>
     </>

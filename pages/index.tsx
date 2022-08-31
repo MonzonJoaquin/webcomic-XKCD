@@ -1,61 +1,48 @@
-import fs from 'fs/promises'
-import styles from '../styles/Home.module.css'
 
+
+import { motion } from "framer-motion"
 import Link from 'next/link'
-import Image from 'next/image'
-import PageLayout from '../components/pageLayout'
 
-interface Props {
-  latestComics : Array<{
-    month: string,
-    num: number,
-    link: string,
-    year: string,
-    news: string,
-    safe_title: string,
-    transcript: string,
-    alt: string,
-    img: string,
-    title: string,
-    day: string,
-    width: number,
-    height: number
-  }>
-}
-
-function Home({latestComics}: Props) {
+function Home() {
   return (
-    <PageLayout title={'Latest Comics'}>
-      <div> 
-        <section>
-        {latestComics.map(comic =>
-          <Link href={`./comic/${comic.num}`} key={comic.num}>
-            <Image src={comic.img} width={comic.width} height={comic.height}></Image>
-          </Link>
-        )}
-        </section>
-      </div>
-    </PageLayout>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', height: '70vh', justifyContent: 'space-evenly' }}>
+      <Link href={'/'}>
+        <a>
+          <motion.h1
+            animate={{ y: [-500, 70, -10, 50, -5, 10, 0] }}
+            transition={{ ease: "easeOut", duration: 1.8 }}>
+              Welcome to WebComics XKCD
+          </motion.h1></a>
+      </Link>
+      <Link href={'/latestComics'}>
+        <a>
+          <motion.h2
+            animate={{ y: [-500, 70, -10, 50, -5, 10, 0] }}
+            transition={{ ease: "easeOut", duration: 1.6 }}>
+              Latest Comics
+        </motion.h2>
+        </a>
+      </Link>
+      <Link href={'/explorer'}>
+        <a>
+          <motion.h2
+            animate={{ y: [-600, 60, -30, 50, -10, 10, 0] }}
+            transition={{ ease: "easeOut", duration: 1.7 }}>
+              Explorer
+        </motion.h2>
+        </a>
+      </Link>
+      <Link href={'/'}>
+        <a>
+          <motion.h2
+            animate={{ y: [-400, 75, -15, 50, -5, 10, 0] }}
+            transition={{ ease: "easeOut", duration: 1.5 }}>
+              Official WebComic
+        </motion.h2>
+        </a>
+      </Link>
+    </div>
   )
 }
 
 export default Home
-
-export async function getStaticProps(){
-  const files = await fs.readdir('./comics/list_comics')
-  const latestFiles = files.slice(-10, files.length)
-
-
-  const promisesReadFiles = latestFiles.map(async(file)=>{
-    const content = await fs.readFile(`./comics/list_comics/${file}`, 'utf-8')
-    return JSON.parse(content)
-  })
-
-  const latestComics = await Promise.all(promisesReadFiles)
-  
-  return {
-    props: {
-      latestComics
-    }
-  }
-}
